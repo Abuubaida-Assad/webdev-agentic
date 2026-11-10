@@ -1,0 +1,27 @@
+/* Custom styles for the Quiz Application */
+
+/* Custom scrollbar for review list */
+#review-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+#review-list::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 4px;
+}
+
+#review-list::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+#review-list::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Ensure focus outline for accessibility on buttons */
+button:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: 2px;
+}
+

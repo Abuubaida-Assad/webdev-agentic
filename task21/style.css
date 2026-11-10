@@ -1,0 +1,27 @@
+/* Custom styles for the Custom Dropdown Menu */
+
+/* Custom scrollbar for options list */
+#dropdown-menu::-webkit-scrollbar {
+  width: 6px;
+}
+
+#dropdown-menu::-webkit-scrollbar-track {
+  background: #f8fafc;
+  border-radius: 4px;
+}
+
+#dropdown-menu::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+#dropdown-menu::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Ensure accessible focus outline */
+button:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: 2px;
+}
+

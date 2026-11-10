@@ -1,0 +1,10 @@
+/* Custom styles for Temperature Converter */
+
+/* Ensure accessible focus visible */
+input:focus-visible,
+select:focus-visible,
+button:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: 2px;
+}
+

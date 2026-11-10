@@ -1,0 +1,29 @@
+/* Custom styles for Reddit Multi-Subreddit Feed Reader */
+
+/* Custom horizontal and vertical scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Ensure accessible focus outlines */
+button:focus-visible,
+input:focus-visible {
+  outline: 2px solid #FF4500;
+  outline-offset: 2px;
+}
+

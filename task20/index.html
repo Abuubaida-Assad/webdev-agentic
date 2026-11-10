@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WeatherNow - Minimal Weather App</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Custom stylesheet for specific enhancements -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-gradient-to-br from-sky-50 via-slate-50 to-slate-100 min-h-screen text-slate-800 antialiased flex flex-col font-sans">
+
+  <!-- ======================================================================
+       Header Section
+       ====================================================================== -->
+  <header class="w-full bg-white/80 backdrop-blur-md border-b border-slate-200/80 sticky top-0 z-30 shadow-sm">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+      <!-- Logo & App Name -->
+      <div class="flex items-center space-x-2.5">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-sky-500 to-blue-600 flex items-center justify-center text-white shadow-sm shadow-sky-200">
+          <!-- Weather Sun/Cloud Icon -->
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 2v2"></path>
+            <path d="m4.93 4.93 1.41 1.41"></path>
+            <path d="M20 12h2"></path>
+            <path d="m19.07 4.93-1.41 1.41"></path>
+            <path d="M15.947 12.65a4 4 0 0 0-5.925-4.128"></path>
+            <path d="M13 22H7a5 5 0 1 1 4.9-6H13a3 3 0 0 1 0 6Z"></path>
+          </svg>
+        </div>
+        <h1 class="text-xl font-bold tracking-tight bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent">
+          WeatherNow
+        </h1>
+      </div>
+
+      <!-- Refresh Button -->
+      <button
+        id="refresh-btn"
+        type="button"
+        disabled
+        aria-label="Refresh weather data"
+        title="Refresh weather for current location"
+        class="inline-flex items-center justify-center space-x-1.5 px-3 py-1.5 rounded-lg text-sm font-medium text-slate-600 bg-slate-100 hover:bg-slate-200 hover:text-slate-900 transition-colors duration-150 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-slate-100 disabled:hover:text-slate-600 focus:outline-none focus:ring-2 focus:ring-sky-500/40"
+      >
+        <svg id="refresh-icon" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"></path>
+          <path d="M21 3v5h-5"></path>
+          <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"></path>
+          <path d="M8 16H3v5"></path>
+        </svg>
+        <span class="hidden sm:inline">Refresh</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ======================================================================
+       Main Content Container
+       ====================================================================== -->
+  <main class="flex-1 max-w-4xl w-full mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-6">
+
+    <!-- Search Section -->
+    <section aria-labelledby="search-heading">
+      <h2 id="search-heading" class="sr-only">Location Search</h2>
+      <form id="search-form" novalidate class="w-full">
+        <div class="flex flex-col sm:flex-row gap-2.5">
+          <div class="relative flex-1">
+            <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+            </div>
+            <input
+              id="location-input"
+              type="text"
+              name="location"
+              autocomplete="off"
+              spellcheck="false"
+              placeholder="Enter a city or location"
+              aria-describedby="validation-error"
+              class="w-full pl-10 pr-4 py-2.5 bg-white border border-slate-300 rounded-xl text-slate-800 placeholder-slate-400 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 shadow-sm transition-all duration-150"
+            />
+          </div>
+          <button
+            id="search-btn"
+            type="submit"
+            class="inline-flex items-center justify-center px-5 py-2.5 rounded-xl font-medium text-sm sm:text-base text-white bg-sky-600 hover:bg-sky-700 active:bg-sky-800 shadow-sm shadow-sky-200 transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-sky-500/50 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            Search
+          </button>
+        </div>
+
+        <!-- Validation Error Message Display -->
+        <p
+          id="validation-error"
+          role="alert"
+          class="hidden mt-2 text-sm text-rose-600 font-medium flex items-center gap-1.5"
+        >
+          <svg class="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+          <span id="validation-error-text"></span>
+        </p>
+
+        <!-- Suggested Quick Search Locations -->
+        <div class="mt-3 flex flex-wrap items-center gap-1.5 text-xs text-slate-500">
+          <span class="font-medium text-slate-400">Popular:</span>
+          <button type="button" class="quick-location-btn px-2.5 py-1 rounded-lg bg-white border border-slate-200 hover:border-sky-300 hover:bg-sky-50 hover:text-sky-700 transition-colors">Hyderabad</button>
+          <button type="button" class="quick-location-btn px-2.5 py-1 rounded-lg bg-white border border-slate-200 hover:border-sky-300 hover:bg-sky-50 hover:text-sky-700 transition-colors">London</button>
+          <button type="button" class="quick-location-btn px-2.5 py-1 rounded-lg bg-white border border-slate-200 hover:border-sky-300 hover:bg-sky-50 hover:text-sky-700 transition-colors">Tokyo</button>
+          <button type="button" class="quick-location-btn px-2.5 py-1 rounded-lg bg-white border border-slate-200 hover:border-sky-300 hover:bg-sky-50 hover:text-sky-700 transition-colors">New York</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- ======================================================================
+         API Feedback States: Error & Loading
+         ====================================================================== -->
+    <!-- Error State Alert Container -->
+    <div
+      id="api-error"
+      role="alert"
+      class="hidden p-4 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 animate-fade-in"
+    >
+      <div class="flex items-start gap-3">
+        <svg class="w-5 h-5 text-rose-500 mt-0.5 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="8" x2="12" y2="12"></line>
+          <line x1="12" y1="16" x2="12.01" y2="16"></line>
+        </svg>
+        <div class="flex-1">
+          <h3 class="text-sm font-semibold text-rose-900">Weather Request Notice</h3>
+          <p id="api-error-message" class="text-sm text-rose-700 mt-0.5"></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Loading State Indicator -->
+    <div
+      id="loading-spinner"
+      role="status"
+      aria-live="polite"
+      class="hidden py-12 flex flex-col items-center justify-center space-y-3 animate-fade-in"
+    >
+      <div class="w-10 h-10 border-4 border-sky-200 border-t-sky-600 rounded-full animate-spin"></div>
+      <p id="loading-text" class="text-sm text-slate-500 font-medium">Fetching weather information...</p>
+      <span class="sr-only">Loading</span>
+    </div>
+
+    <!-- ======================================================================
+         Initial Welcome State
+         ====================================================================== -->
+    <div
+      id="welcome-state"
+      class="bg-white border border-slate-200/80 rounded-2xl p-8 sm:p-12 text-center shadow-sm"
+    >
+      <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-sky-50 border border-sky-100 flex items-center justify-center text-sky-600">
+        <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"></path>
+        </svg>
+      </div>
+      <h3 class="text-lg font-semibold text-slate-800">Welcome to WeatherNow</h3>
+      <p class="text-sm text-slate-500 max-w-md mx-auto mt-1.5 leading-relaxed">
+        Search for any city or location above to view current conditions, the previous 24 hours of observations, and the next 24-hour forecast.
+      </p>
+    </div>
+
+    <!-- ======================================================================
+         Active Weather Content (Hidden until search succeeds)
+         ====================================================================== -->
+    <div id="weather-content" class="hidden space-y-6 animate-fade-in">
+
+      <!-- Current Weather Card -->
+      <section aria-labelledby="current-weather-heading" class="bg-white border border-slate-200/80 rounded-2xl p-6 sm:p-8 shadow-sm">
+        <h2 id="current-weather-heading" class="sr-only">Current Weather Conditions</h2>
+
+        <!-- Header: Location & Local Time -->
+        <div class="flex flex-col sm:flex-row sm:items-start justify-between pb-6 border-b border-slate-100 gap-2">
+          <div>
+            <div class="flex items-center gap-1.5 text-sky-600 text-xs font-semibold uppercase tracking-wider mb-1">
+              <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path>
+                <circle cx="12" cy="10" r="3"></circle>
+              </svg>
+              <span>Current Weather</span>
+            </div>
+            <h3 id="current-location" class="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight"></h3>
+          </div>
+          <div class="text-left sm:text-right">
+            <span class="text-xs text-slate-400 font-medium block">Local Time</span>
+            <span id="current-datetime" class="text-sm font-medium text-slate-700"></span>
+          </div>
+        </div>
+
+        <!-- Main Display: Temperature & Visuals -->
+        <div class="py-6 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+          <div class="flex items-center gap-5">
+            <!-- Weather Icon Container -->
+            <div id="current-icon" class="w-20 h-20 sm:w-24 sm:h-24 flex items-center justify-center flex-shrink-0 text-sky-500">
+              <!-- Dynamically populated SVG -->
+            </div>
+            <!-- Prominent Temperature -->
+            <div>
+              <div class="flex items-start">
+                <span id="current-temp" class="text-5xl sm:text-6xl font-extrabold text-slate-900 tracking-tight">--</span>
+                <span class="text-2xl sm:text-3xl font-semibold text-slate-600 mt-1">°C</span>
+              </div>
+              <p id="current-condition" class="text-base sm:text-lg font-medium text-slate-600 mt-1">--</p>
+            </div>
+          </div>
+
+          <!-- Secondary Metrics: Wind Speed & Precipitation -->
+          <div class="grid grid-cols-2 sm:grid-cols-1 gap-3 sm:w-48 bg-slate-50/80 rounded-xl p-3.5 border border-slate-100">
+            <!-- Wind Speed -->
+            <div class="flex items-center gap-2.5">
+              <div class="w-8 h-8 rounded-lg bg-sky-100/60 text-sky-600 flex items-center justify-center flex-shrink-0">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M17.7 7.7a2.5 2.5 0 1 1 1.8 4.3H2"></path>
+                  <path d="M9.6 4.6A2 2 0 1 1 11 8H2"></path>
+                  <path d="M12.6 19.4A2 2 0 1 0 14 16H2"></path>
+                </svg>
+              </div>
+              <div>
+                <span class="text-xs text-slate-400 font-medium block">Wind Speed</span>
+                <span id="current-wind" class="text-sm font-semibold text-slate-800">-- km/h</span>
+              </div>
+            </div>
+
+            <!-- Precipitation Probability -->
+            <div class="flex items-center gap-2.5">
+              <div class="w-8 h-8 rounded-lg bg-blue-100/60 text-blue-600 flex items-center justify-center flex-shrink-0">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="m12 2.69 5.66 5.66a8 8 0 1 1-11.31 0z"></path>
+                </svg>
+              </div>
+              <div>
+                <span class="text-xs text-slate-400 font-medium block">Precipitation</span>
+                <span id="current-precip" class="text-sm font-semibold text-slate-800">--%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Previous 24 Hours Section -->
+      <section aria-labelledby="previous-hours-heading" class="bg-white border border-slate-200/80 rounded-2xl p-5 sm:p-6 shadow-sm">
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <h2 id="previous-hours-heading" class="text-base sm:text-lg font-bold text-slate-900">
+              Previous 24 Hours
+            </h2>
+            <p class="text-xs text-slate-500">Hourly weather observations leading up to the current time</p>
+          </div>
+          <span class="text-xs font-medium text-slate-400 bg-slate-100 px-2.5 py-1 rounded-md">Past 24h</span>
+        </div>
+        <div
+          id="previous-hours-list"
+          class="hourly-scroll-container flex gap-3 overflow-x-auto pb-3 pt-1 px-0.5"
+          tabindex="0"
+          aria-label="Previous 24 hours weather carousel"
+        >
+          <!-- Dynamically populated hourly cards -->
+        </div>
+      </section>
+
+      <!-- Next 24 Hours Section -->
+      <section aria-labelledby="next-hours-heading" class="bg-white border border-slate-200/80 rounded-2xl p-5 sm:p-6 shadow-sm">
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <h2 id="next-hours-heading" class="text-base sm:text-lg font-bold text-slate-900">
+              Next 24 Hours Forecast
+            </h2>
+            <p class="text-xs text-slate-500">Upcoming hourly forecast from the current local time</p>
+          </div>
+          <span class="text-xs font-medium text-sky-600 bg-sky-50 px-2.5 py-1 rounded-md border border-sky-100">Forecast 24h</span>
+        </div>
+        <div
+          id="next-hours-list"
+          class="hourly-scroll-container flex gap-3 overflow-x-auto pb-3 pt-1 px-0.5"
+          tabindex="0"
+          aria-label="Next 24 hours forecast carousel"
+        >
+          <!-- Dynamically populated hourly cards -->
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- ======================================================================
+       Footer Section
+       ====================================================================== -->
+  <footer class="w-full border-t border-slate-200/70 bg-white/50 py-4 text-center text-xs text-slate-400">
+    <div class="max-w-4xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
+      <p>WeatherNow &bull; Built with Vanilla JavaScript &amp; Tailwind CSS</p>
+      <p>Data provided by <a href="https://www.visualcrossing.com/weather-api" target="_blank" rel="noopener noreferrer" class="text-sky-600 hover:underline">Visual Crossing Weather</a> (Metric Units)</p>
+    </div>
+  </footer>
+
+  <!-- Application Logic -->
+  <script src="script.js"></script>
+</body>
+</html>
+

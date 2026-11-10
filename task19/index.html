@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>General Knowledge Quiz</title>
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="bg-gray-100 text-gray-800 min-h-screen flex items-center justify-center p-4">
+
+  <!-- Main Quiz Container Card -->
+  <main class="w-full max-w-xl bg-white rounded-xl shadow-md p-6 sm:p-8">
+
+    <!-- Screen 1: Welcome Page -->
+    <section id="welcome-screen" class="text-center">
+      <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">General Knowledge Quiz</h1>
+      <p class="text-gray-600 mb-6">Test your knowledge with 10 multiple-choice questions.</p>
+
+      <!-- Quiz Rules Information Box -->
+      <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-6 text-left text-sm space-y-2.5">
+        <div class="flex justify-between items-center py-1 border-b border-gray-200">
+          <span class="text-gray-600 font-medium">Total Questions</span>
+          <span class="font-semibold text-gray-900">10</span>
+        </div>
+        <div class="flex justify-between items-center py-1 border-b border-gray-200">
+          <span class="text-gray-600 font-medium">Time Limit</span>
+          <span class="font-semibold text-gray-900">1 minute per question</span>
+        </div>
+        <div class="flex justify-between items-center py-1 border-b border-gray-200">
+          <span class="text-gray-600 font-medium">Correct Answer</span>
+          <span class="font-semibold text-green-600">+1 point</span>
+        </div>
+        <div class="flex justify-between items-center py-1 border-b border-gray-200">
+          <span class="text-gray-600 font-medium">Incorrect Answer</span>
+          <span class="font-semibold text-gray-600">0 points</span>
+        </div>
+        <div class="flex justify-between items-center py-1">
+          <span class="text-gray-600 font-medium">Time Out / Skipped</span>
+          <span class="font-semibold text-red-600">-1 point</span>
+        </div>
+      </div>
+
+      <!-- Start Quiz Button -->
+      <button id="start-btn" class="w-full py-3 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-medium rounded-lg transition duration-150 shadow-sm cursor-pointer">
+        Start Quiz
+      </button>
+    </section>
+
+    <!-- Screen 2 & Screen 3: Quiz Page & Answer Feedback -->
+    <section id="quiz-screen" class="hidden">
+      <!-- Quiz Header: Question Number & Current Score -->
+      <div class="flex justify-between items-center text-sm font-medium text-gray-600 mb-2">
+        <span>Question <span id="current-question-num" class="font-bold text-gray-900">1</span> of <span id="total-questions-num" class="font-bold text-gray-900">10</span></span>
+        <span>Score: <span id="current-score" class="font-bold text-gray-900">0</span></span>
+      </div>
+
+      <!-- Progress Bar -->
+      <div class="w-full bg-gray-200 h-2 rounded-full overflow-hidden mb-4">
+        <div id="progress-bar" class="bg-blue-600 h-2 rounded-full transition-all duration-300" style="width: 10%;"></div>
+      </div>
+
+      <!-- Timer Bar & Indicator -->
+      <div class="flex justify-between items-center mb-4">
+        <span class="text-xs uppercase tracking-wider text-gray-500 font-semibold">Multiple Choice</span>
+        <div id="timer-badge" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-700 border border-gray-200">
+          <span>Time Left:</span>
+          <span id="timer-text" class="text-sm font-bold text-gray-900">60</span>s
+        </div>
+      </div>
+
+      <!-- Question Text -->
+      <h2 id="question-text" class="text-lg sm:text-xl font-semibold text-gray-900 mb-5 leading-snug">
+        Question text will appear here
+      </h2>
+
+      <!-- Answer Options (4 buttons generated via JavaScript) -->
+      <div id="options-container" class="space-y-3 mb-5">
+        <!-- Option buttons inserted by script.js -->
+      </div>
+
+      <!-- Answer Feedback Area -->
+      <div id="feedback-container" class="hidden rounded-lg p-3 text-sm font-medium mb-5">
+        <p id="feedback-text"></p>
+      </div>
+
+      <!-- Next Question Button -->
+      <button id="next-btn" class="hidden w-full py-3 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-medium rounded-lg transition duration-150 shadow-sm cursor-pointer">
+        Next Question
+      </button>
+    </section>
+
+    <!-- Screen 5: Final Results Screen -->
+    <section id="results-screen" class="hidden">
+      <div class="text-center mb-6">
+        <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-1">Quiz Completed!</h1>
+        <p class="text-gray-600 text-sm">Here is a complete breakdown of your results.</p>
+      </div>
+
+      <!-- Performance Summary Cards -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
+        <div class="bg-gray-50 border border-gray-200 rounded-lg p-3 text-center">
+          <p class="text-xs text-gray-500 font-medium">Final Score</p>
+          <p id="final-score" class="text-lg sm:text-xl font-bold text-gray-900 mt-1">0/10</p>
+        </div>
+        <div class="bg-gray-50 border border-gray-200 rounded-lg p-3 text-center">
+          <p class="text-xs text-gray-500 font-medium">Percentage</p>
+          <p id="percentage-score" class="text-lg sm:text-xl font-bold text-blue-600 mt-1">0%</p>
+        </div>
+        <div class="bg-gray-50 border border-gray-200 rounded-lg p-3 text-center">
+          <p class="text-xs text-gray-500 font-medium">Correct</p>
+          <p id="correct-count" class="text-lg sm:text-xl font-bold text-green-600 mt-1">0</p>
+        </div>
+        <div class="bg-gray-50 border border-gray-200 rounded-lg p-3 text-center">
+          <p class="text-xs text-gray-500 font-medium">Incorrect</p>
+          <p id="incorrect-count" class="text-lg sm:text-xl font-bold text-red-600 mt-1">0</p>
+        </div>
+      </div>
+
+      <!-- Unanswered / Timeout Counter -->
+      <div class="bg-gray-50 border border-gray-200 rounded-lg p-3 mb-6 flex justify-between items-center text-sm">
+        <span class="text-gray-600 font-medium">Unanswered (Time Out):</span>
+        <span id="unanswered-count" class="font-bold text-gray-800">0</span>
+      </div>
+
+      <!-- List of all 10 questions with user answer vs correct answer -->
+      <div class="mb-6">
+        <h2 class="text-sm font-semibold text-gray-700 uppercase tracking-wide mb-3">Question Review</h2>
+        <div id="review-list" class="space-y-3 max-h-72 overflow-y-auto pr-1">
+          <!-- Question review items generated by script.js -->
+        </div>
+      </div>
+
+      <!-- Restart Quiz Button -->
+      <button id="restart-btn" class="w-full py-3 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-medium rounded-lg transition duration-150 shadow-sm cursor-pointer">
+        Restart Quiz
+      </button>
+    </section>
+
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
+

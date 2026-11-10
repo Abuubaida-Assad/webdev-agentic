@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Custom Dropdown Menu</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="bg-gray-100 text-gray-800 min-h-screen flex items-center justify-center p-4">
+
+  <!-- Centered Card Container -->
+  <main class="w-full max-w-md bg-white rounded-xl shadow-md p-6 sm:p-8 text-center">
+    
+    <!-- Title & Description -->
+    <h1 class="text-2xl font-bold text-gray-900 mb-2">Custom Dropdown Menu</h1>
+    <p class="text-sm text-gray-600 mb-6">Select an option from the list.</p>
+
+    <!-- Custom Dropdown Component -->
+    <div class="relative w-full text-left" id="dropdown-container">
+      
+      <!-- Dropdown Button -->
+      <button
+        id="dropdown-btn"
+        type="button"
+        class="w-full flex items-center justify-between px-4 py-3 bg-white border border-gray-300 rounded-lg shadow-sm text-left hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition cursor-pointer"
+        aria-haspopup="listbox"
+        aria-expanded="false"
+      >
+        <span id="selected-text" class="text-gray-500 font-normal">Select an option</span>
+        <!-- Dropdown Arrow Icon -->
+        <svg
+          id="dropdown-arrow"
+          class="w-5 h-5 text-gray-400 transition-transform duration-200"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+
+      <!-- Dropdown Options List -->
+      <ul
+        id="dropdown-menu"
+        class="hidden absolute left-0 right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-md z-10 max-h-60 overflow-y-auto py-1"
+        role="listbox"
+      >
+        <!-- Options will be dynamically rendered by script.js -->
+      </ul>
+
+    </div>
+
+    <!-- Feedback display showing current selection -->
+    <div id="selection-display" class="mt-6 pt-4 border-t border-gray-100 text-xs text-gray-500">
+      Current selection: <span id="current-selection-value" class="font-medium text-gray-800">None</span>
+    </div>
+
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
+
